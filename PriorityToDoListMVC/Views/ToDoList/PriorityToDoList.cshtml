@@ -1,0 +1,136 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Priority To-Do List</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/PriorityToDoList.js"></script>
+</head>
+<body ng-app="PriorityList" ng-controller="Main" ng-init="getTasks()">
+    <!--Title-->
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Priority To-Do List</h1>
+            <p>Make keeping track of important day to day tasks simple and easy with the Priority To-Do List application</p>
+        </div>
+    </div>
+
+    <br />
+
+    <!--Text input and butttons-->
+    <div class="container">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Add to list</span>
+            </div>
+            <textarea maxlength="2000" id="text" class="form-control" aria-label="With textarea" ng-model="text"></textarea>
+            <div>
+                <button type="button" id="addToHighList" class="btn btn-danger" ng-click="addHighTask()">High</button>
+                <button type="button" id="addToMedList" class="btn btn-warning" ng-click="addMedTask()">Med</button>
+                <button type="button" id="addToLowList" class="btn btn-success" ng-click="addLowTask()">Low</button>
+                <button id="clearTextButton" class="btn btn-dark" ng-click="clear()">Clear Text</button>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <!--Stats-->
+    <div class="container">
+        <h2 id="incompleteTasks" value="{{HighPriority.length + MediumPriority.length + LowPriority.length}}">Tasks incomplete: {{HighPriority.length + MediumPriority.length + LowPriority.length}} </h2>
+        <h2 id="completeTasks" value="{{CompletedTasks.length}}">Tasks completed: {{CompletedTasks.length}}</h2>
+    </div>
+
+    <br />
+
+    <!--High Priority-->
+    <div class="container">
+        <table id="highTable" class="table table-bordered">
+            <thead class="table-danger">
+                <tr>
+                    <th class="text-center" scope="col">High Priority {{HighPriority.length}}</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="hp in HighPriority">
+                <tr>
+                    <td name="highTasks" class="text-center" value="{{hp.Name}}">{{hp.Name}} <button name="highDone" class="btn btn-primary" ng-click="doneHigh(hp.Name)">Done</button> <button name="highRemove" class="btn btn-danger" ng-click="removeHigh(hp.Name)">Remove</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <br />
+
+    <!--Medium priority table-->
+    <div class="container">
+        <table id="medTable" class="table table-bordered">
+            <thead class="table-warning">
+                <tr>
+                    <th class="text-center" scope="col">Medium Priority {{MediumPriority.length}}</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="mp in MediumPriority">
+                <tr>
+                    <td name="medTasks" class="text-center" value="{{mp.Name}}">{{mp.Name}} <button name="medDone" class="btn btn-primary" ng-click="doneMed(mp.Name)">Done</button> <button name="medRemove" class="btn btn-danger" ng-click="removeMed(mp.Name)">Remove</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <br />
+
+    <!--Low priority table-->
+    <div class="container">
+        <table id="lowTable" class="table table-bordered">
+            <thead class="table-success">
+                <tr>
+                    <th class="text-center" scope="col">Low Priority {{LowPriority.length}}</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="lp in LowPriority">
+                <tr>
+                    <td name="lowTasks" class="text-center" value="{{lp.Name}}">{{lp.Name}} <button name="lowDone" class="btn btn-primary" ng-click="doneLow(lp.Name)">Done</button> <button name="lowRemove" class="btn btn-danger" ng-click="removeLow(lp.Name)">Remove</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <br />
+
+    <!--Complete table -->
+    <div class="container">
+        <table class="table table-bordered">
+            <thead class="table-primary">
+                <tr>
+                    <th class="text-center" scope="col">Completed Tasks {{CompletedTasks.length}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="ct in CompletedTasks | filter: { Priority:'High Priority'}">
+                    <td name="completedHighTasks" value="{{ct.Name}}" class="text-center text-danger">{{ct.Name}} (High Priority)</td>
+                </tr>
+                <tr ng-repeat="ct in CompletedTasks | filter: { Priority:'Medium Priority'}">
+                    <td name="completedMedTasks" value="{{ct.Name}}" class="text-center text-warning">{{ct.Name}} (Medium Priority)</td>
+                </tr>
+                <tr ng-repeat="ct in CompletedTasks | filter: { Priority:'Low Priority'}">
+                    <td name="completedLowTasks" value="{{ct.Name}}" class="text-center text-success">{{ct.Name}} (Low Priority)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <br />
+
+    <!--Extra buttons-->
+    <div class="container">
+        <button id="reset" type="button" class="btn btn-secondary btn-lg btn-block" ng-click="reset()">Reset</button>
+    </div>
+</body>
+</html>
